@@ -37,7 +37,20 @@ const Home: React.FC = () => {
       setSearchHistory(updatedHistory)
       localStorage.setItem('searchHistory', JSON.stringify(updatedHistory))
     }
-  }, [searchQuery, searchHistory])
+  }, [searchQuery])
+
+  const handleScroll = () => {
+    const isAtBottom = window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight
+
+    if(isAtBottom){
+      if(isSearching && hasMoreSearched.current){
+        setSearchedPage(prevPage => prevPage + 1)
+        refetchSearched()
+      }else if(!isSearching && hasMorePopular.current){
+        setPopularPage(prevPage => prevPage + 1)
+      }
+    }
+  }
 
   function deduplicatePhotos(photos: Photo[], newData: Photo[]) {
     const photoIds = new Set(photos.map(photo => photo.id));
@@ -62,19 +75,6 @@ const Home: React.FC = () => {
   }, [isSearching, popularData, searchedData])
 
   useEffect(() => {
-    const handleScroll = () => {
-      const isAtBottom = window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight
-  
-      if(isAtBottom){
-        if(isSearching && hasMoreSearched.current){
-          setSearchedPage(prevPage => prevPage + 1)
-          refetchSearched()
-        }else if(!isSearching && hasMorePopular.current){
-          setPopularPage(prevPage => prevPage + 1)
-        }
-      }
-    }
-
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [isSearching])
