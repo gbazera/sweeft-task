@@ -77,7 +77,7 @@ const Home: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [isSearching, refetchSearched])
+  }, [isSearching])
 
   return (
     <main>
