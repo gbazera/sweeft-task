@@ -20,7 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     timeoutRef.current = setTimeout(() => {
       onSearch(searchQuery)
     }, 700)
-  },[searchQuery])
+  },[searchQuery, onSearch])
 
   return (
     <div>
